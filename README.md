@@ -87,7 +87,7 @@ If you edit this value you will see the servlet return the new value without hav
 
 ### Hystrix
 
-Review the file `ws-netflixoss-examples/src/net/wasdev/wlp/netflixoss/examples/Hystrix.java`. This servlet contains an example usage of `HystrixCommand` returning a string. The `run` method of the command returns the principals associated with the current thread. If you browse to http://localhost:9090/ws-netflixoss-examples/hystrix you will see that the principal associated with the original servlet thread is successfully propagated to the thread on which the command is executed.
+Review the file `ws-netflixoss-examples/src/net/wasdev/wlp/netflixoss/examples/Hystrix.java`. This servlet contains three example usages of `HystrixCommand` returning a string. In `checkThreadContextPropagation` the `run` method of the command returns the principals associated with the current thread. If you browse to http://localhost:9090/ws-netflixoss-examples/hystrix you will see that the principal associated with the original servlet thread is successfully propagated to the thread on which the command is executed. In `checkCommandTimeout` you will see the use of a fallback method when the invocation of the `run` method times out. Lastly, in `checkCommandError` you will see the use of a fallback method when an error is propagated from the `run` method.
 
 [Netflix OSS]: http://netflix.github.io/
 [Archaius]: https://github.com/Netflix/archaius/wiki
