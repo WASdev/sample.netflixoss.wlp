@@ -1,0 +1,49 @@
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+
+<web-app>
+
+    <display-name>Liberty Netflix OSS Test Web Application</display-name>
+      
+    <servlet>
+        <servlet-name>NestedPropertiesServlet</servlet-name>
+        <servlet-class>net.wasdev.wlp.netflixoss.archaius.test.NestedPropertiesServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>NestedPropertiesServlet</servlet-name>
+        <url-pattern>/NestedPropertiesServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>NestedPropertiesTestServlet</servlet-name>
+        <servlet-class>net.wasdev.wlp.netflixoss.archaius.test.NestedPropertiesTestServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>NestedPropertiesTestServlet</servlet-name>
+        <url-pattern>/NestedPropertiesTestServlet</url-pattern>
+    </servlet-mapping>
+    
+    <servlet>
+        <servlet-name>HystrixTestServlet</servlet-name>
+        <servlet-class>net.wasdev.wlp.netflixoss.hystrix.test.HystrixTestServlet</servlet-class>
+    </servlet>
+    
+    <servlet-mapping>
+        <servlet-name>HystrixTestServlet</servlet-name>
+        <url-pattern>/HystrixTestServlet</url-pattern>
+    </servlet-mapping>
+    
+    <filter>
+        <filter-name>HystrixTestServletFilter</filter-name>
+        <filter-class>net.wasdev.wlp.netflixoss.hystrix.test.HystrixTestServletFilter</filter-class>
+    </filter>
+    
+    <filter-mapping>
+        <filter-name>HystrixTestServletFilter</filter-name>
+        <servlet-name>HystrixTestServlet</servlet-name>
+    </filter-mapping>
+    
+</web-app>

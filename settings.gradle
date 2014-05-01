@@ -1,0 +1,1 @@
+include "ws-archaius", "ws-netflixoss", "ws-netflixoss-fv", "ws-hystrix", "ws-hystrix-event-stream"

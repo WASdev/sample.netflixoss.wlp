@@ -1,0 +1,31 @@
+apply plugin: 'maven'
+apply plugin: 'java'
+
+defaultTasks 'buildEsa', 'install'
+
+
+configurations {
+    bundles
+}
+
+dependencies {
+    bundles project(path: ':ws-archaius', configuration: 'bundle')
+    bundles project(path: ':ws-hystrix', configuration: 'bundle')
+}
+
+task copyManifest(type: Copy) {
+    from 'src/main/resources'
+    into "${project.buildDir}/resources/main"
+    expand version: project.version
+}
+
+task buildEsa (dependsOn: [configurations.bundles, copyManifest], type: Zip) {
+    archiveName = "${project.name}_${project.version}.esa"
+    destinationDir = file("${project.buildDir}/libs")
+    from { configurations.bundles.collect { it } }
+    from "${project.buildDir}/resources/main"
+}
+
+configurations { feature }
+artifacts { feature buildEsa }
+artifacts { archives file("${project.buildDir}/libs/${project.name}_${project.version}.esa") }

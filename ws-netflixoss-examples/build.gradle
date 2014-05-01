@@ -1,0 +1,55 @@
+apply plugin: 'jetty'
+apply plugin: 'war'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply from: file('./gradle/liberty.gradle')
+group = 'gradle'
+version = '1.0'
+
+repositories {	
+	mavenLocal()
+	maven {
+		name = 'WASdev Repository'
+		url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
+	}
+	mavenCentral()	
+}
+
+dependencies {
+	providedCompile("javax.servlet:javax.servlet-api:3.0.1") { transitive = false } 
+	providedCompile ("com.netflix.archaius:archaius-core:0.5.12") { transitive = false }
+	providedCompile ("com.netflix.hystrix:hystrix-core:1.3.9") { transitive = false }
+	compile 'com.netflix.ribbon:ribbon-httpclient:0.3.10'
+	compile 'com.netflix.servo:servo-core:0.6.0'				   				  			 
+	runtime 'org.slf4j:slf4j-jdk14:1.7.6'				               
+}
+
+sourceSets {
+	main {
+		java { srcDirs = ["src"] }
+	}
+}
+
+eclipse {
+        jdt {    
+                sourceCompatibility = 1.6
+                targetCompatibility = 1.6
+        }       
+	wtp {
+		component {
+			resource sourcePath: 'WebContent', deployPath: '/'
+			resource sourcePath: 'src', deployPath: '/WEB-INF/classes'
+		}
+		facet {
+			facet name: 'jst.web', version: '3.0'
+			facet name: 'java', version: '1.6'
+			facet name: 'wst.jsdt.web', version: '1.0'
+		}
+	}
+	classpath { defaultOutputDir = file('WebContent/WEB-INF/classes') }
+}
+
+war
+{
+        webXml = file('WebContent/WEB-INF/web.xml')
+}

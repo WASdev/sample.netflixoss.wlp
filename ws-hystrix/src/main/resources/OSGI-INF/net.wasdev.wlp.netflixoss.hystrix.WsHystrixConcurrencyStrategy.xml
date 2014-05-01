@@ -1,0 +1,15 @@
+<?xml version='1.1'?>
+
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.wasdev.wlp.netflixoss.hystrix.WsHystrixConcurrencyStrategy">
+  <implementation class="net.wasdev.wlp.netflixoss.hystrix.WsHystrixConcurrencyStrategy" />
+  <property name="service.vendor" value="IBM" />
+  <service>
+     <provide interface="com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategy" />
+  </service>
+  <reference interface="net.wasdev.wlp.netflixoss.hystrix.BlockingQueueFactory" name="blockingQueueFactory"
+      cardinality="1..1" policy="static"
+      bind="setBlockingQueueFactory" unbind="unsetBlockingQueueFactory" />
+  <reference interface="net.wasdev.wlp.netflixoss.hystrix.ThreadPoolExecutorFactory" name="threadPoolExecutorFactory"
+      cardinality="1..1" policy="static"
+      bind="setThreadPoolExecutorFactory" unbind="unsetThreadPoolExecutorFactory" />
+</scr:component>

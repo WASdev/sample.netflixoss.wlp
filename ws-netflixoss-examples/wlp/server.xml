@@ -1,0 +1,56 @@
+<server description="new server">
+
+	<!-- Enable features -->
+	<featureManager>
+		<feature>jsp-2.2</feature>
+		<feature>localConnector-1.0</feature>
+		<feature>servlet-3.0</feature>
+		<feature>appSecurity-2.0</feature>
+		<feature>concurrent-1.0</feature>
+		<feature>usr:ws-netflixoss</feature>
+		<feature>jaxrs-1.1</feature>
+	</featureManager>
+
+	<quickStartSecurity userName="demouser"
+		userPassword="demopassword" />
+
+	<httpEndpoint host="localhost" httpPort="9090" httpsPort="9453"
+		id="defaultHttpEndpoint" />
+
+	<com.ibm.ws.noss.hystrix.WsHystrixThreadPoolExecutorService
+		executorService.target="(id=hystrixExecutorService)" />
+
+	<managedExecutorService id="hystrixExecutorService" />
+
+
+	<applicationMonitor updateTrigger="mbean" />
+
+	<archaius>
+		<archaiusServlet>
+			<string>From server.xml</string>
+		</archaiusServlet>
+
+		<sample-client>
+			<ribbon>
+				<MaxAutoRetries>1</MaxAutoRetries>
+				<MaxAutoRetriesNextServer>1</MaxAutoRetriesNextServer>
+				<OkToRetryOnAllOperations>true</OkToRetryOnAllOperations>
+				<ServerListRefreshInterval>2000</ServerListRefreshInterval>
+				<ConnectTimeout>3000</ConnectTimeout>
+				<ReadTimeout>3000</ReadTimeout>
+				<listOfServers>www.microsoft.com:80,www.yahoo.com:80,www.google.com:80</listOfServers>
+				<EnablePrimeConnections>true</EnablePrimeConnections>
+			</ribbon>
+		</sample-client>
+	</archaius>
+
+	<webApplication id="ws-netflixoss-examples" location="ws-netflixoss-examples-1.0.war"
+		name="ws-netflixoss-examples">
+		<application-bnd>
+			<security-role name="securityRole">
+				<user name="demouser" />
+			</security-role>
+		</application-bnd>
+
+	</webApplication>
+</server>

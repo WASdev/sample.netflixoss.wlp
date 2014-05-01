@@ -1,0 +1,67 @@
+<server description="Netflix OSS Sample Server">
+
+    <featureManager>
+        <feature>jsp-2.2</feature>
+        <feature>localConnector-1.0</feature>
+        <feature>concurrent-1.0</feature>
+        <feature>usr:ws-netflixoss</feature>
+    </featureManager>
+
+    <httpEndpoint host="localhost" httpPort="9080" httpsPort="9443" id="defaultHttpEndpoint"/>
+
+    <archaius>
+
+        <PhaniWebApp>
+            <myJDBCServer>DB_SERVER</myJDBCServer>
+            <myJDBCPort>1200</myJDBCPort>
+            <myJDBCCredentials>
+                <myUserId>PHANI</myUserId>
+                <myPassword>dummy_password</myPassword>
+            </myJDBCCredentials>
+        </PhaniWebApp>
+
+        <PhaniEjbApp>
+            <myJMSServer>JMS_SERVER</myJMSServer>
+            <myJMSCredentials>
+                <myJMSUser>MADGULA</myJMSUser>
+                <myJMSPassword>JMS-PASSWORD-3</myJMSPassword>
+            </myJMSCredentials>
+        </PhaniEjbApp>
+
+        <StockListingAPP>
+            <listProperties>
+                <tableProperties>
+                    <name>LIST_ONE</name>
+                    <width>300px</width>
+                    <height>800px</height>
+                </tableProperties>
+            </listProperties>
+            <chartProperties>
+                <chartName>CHART_STOCK</chartName>
+                <chartStyle>
+                    <color>WHITISH_GREY</color>
+                    <shade>WHITISH-DARK</shade>
+                </chartStyle>
+                <fontStyle>italic,bold</fontStyle>
+            </chartProperties>
+        </StockListingAPP>
+
+        <hystrix>
+            <command>
+                <CommandHelloWorld>
+                    <execution>
+                        <isolation>
+                            <thread>
+                                <timeoutInMilliseconds>20000</timeoutInMilliseconds>
+                            </thread>
+                        </isolation>
+                    </execution>
+                </CommandHelloWorld>
+            </command>
+        </hystrix>
+
+    </archaius>
+
+    <applicationMonitor updateTrigger="mbean"/>
+
+</server>

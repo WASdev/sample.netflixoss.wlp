@@ -1,0 +1,168 @@
+apply plugin: 'java'
+apply plugin: 'eclipse'
+apply plugin: 'eclipse-wtp'
+apply plugin: 'war'
+apply plugin: 'wrapper'
+
+repositories { mavenCentral() }
+
+repositories {
+	ivy {
+		artifactPattern wlpDir+'/dev/api/ibm/[artifact]_[revision](-[classifier]).[ext]'
+		artifactPattern wlpDir+'/dev/api/spec/[artifact]_[revision](-[classifier]).[ext]'
+		artifactPattern wlpDir+'/dev/api/third-party/[artifact]_[revision](-[classifier]).[ext]'
+		
+		artifactPattern wlpDir+'/dev/spi/ibm/[artifact]_[revision](-[classifier]).[ext]'
+		artifactPattern wlpDir+'/dev/spi/spec/[artifact]_[revision](-[classifier]).[ext]'
+		artifactPattern wlpDir+'/dev/spi/third-party/[artifact]_[revision](-[classifier]).[ext]'
+	}
+}
+
+def buildLibertyMap() {
+
+	Map<String,String> result = new HashMap();
+
+	def libertyUserDirFile = file(libertyServer.userDir)
+	if(!libertyUserDirFile.isDirectory()) {
+		libertyUserDirFile.mkdirs()
+	}
+	result.put('serverName',libertyServer.serverName)
+	result.put('userDir',libertyServer.userDir)
+	result.put('outputDir',libertyServer.outputDir)
+	result.put('installDir',wlpDir)
+	result.put('timeout',libertyServer.timeout	)
+
+	return result;
+}
+
+ant.taskdef(name: 'server', classname: 'com.ibm.websphere.wlp.ant.ServerTask') {
+	classpath {
+		fileset(dir: wlpDir+'/dev/tools/ant', includes: '*.jar')
+	}
+}
+
+ant.taskdef(name: 'deploy', classname: 'com.ibm.websphere.wlp.ant.DeployTask') {
+	classpath {
+		fileset(dir: wlpDir+'/dev/tools/ant', includes: '*.jar')
+	}
+}
+
+ant.taskdef(name: 'undeploy', classname: 'com.ibm.websphere.wlp.ant.UndeployTask') {
+	classpath {
+		fileset(dir: wlpDir+'/dev/tools/ant', includes: '*.jar')
+	}
+}
+
+
+dependencies {
+	providedCompile ':com.ibm.websphere.appserver.api.jaxrs:1.0.4'
+	providedCompile ':com.ibm.websphere.appserver.api.json:1.0.2'
+	providedCompile ':com.ibm.websphere.appserver.api.servlet:1.0.3'
+	providedCompile ':com.ibm.websphere.appserver.spi.jsp:1.0.0'
+	providedCompile ':com.ibm.websphere.appserver.spi.servlet:1.0.3'
+	providedCompile ':com.ibm.websphere.appserver.thirdparty.jaxrs:1.0.4'
+	providedCompile ':com.ibm.ws.javaee.annotation.1.1:1.0.1'
+	providedCompile ':com.ibm.ws.javaee.jaxrs.1.1:1.0.1'
+	providedCompile ':com.ibm.ws.javaee.jsp.2.2:1.0.1'
+	providedCompile ':com.ibm.ws.javaee.jsp.tld.2.2:1.0.3'
+	providedCompile ':com.ibm.ws.javaee.servlet.3.0:1.0.2'
+	providedCompile ':com.ibm.ws.javaee.transaction.1.1:1.0.1'
+	providedCompile ':com.ibm.websphere.appserver.api.basics:1.0.4'
+}
+
+task libertyStatus {
+	description 'Check the WebSphere Liberty Profile server is running'
+	logging.level = LogLevel.INFO
+	doLast {
+		def params = buildLibertyMap();
+		params.put('operation','status')
+		try {
+			ant.server(params)
+		}
+		catch(Exception e) {
+			println e
+		}
+	}
+}
+
+task libertyServer {
+	description 'Create a WebSphere Liberty Profile server'
+
+	ext.serverName = 'defaultServer'
+	ext.outputDir = null
+	ext.installDir = null
+	ext.userDir = new File(buildDir, 'wlp')
+	ext.timeout = 30000
+
+        outputs.file "${userDir}/servers/${serverName}/server.xml"
+
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('operation','create')
+		ant.server(params)
+	}
+}
+
+task packageServer{
+	description 'Generates a WebSphere Liberty Profile server archive'
+	ext.archivePath = new File(buildDir, libertyServer.serverName+'.zip')
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('operation','package')
+		params.put('archive',archivePath )
+		ant.server(params)
+	}
+}
+
+task startServer{
+	description 'Start a WebSphere Liberty Profile server'
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('operation','start')
+		try {
+			ant.server(params)
+		}
+		catch(Exception e) {
+			println e
+		}
+	}
+}
+
+task deployWar(dependsOn: [war,startServer]) {
+	description 'Deploys war to WebSphere Liberty Profile server'
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('file',war.archivePath)
+		ant.deploy(params)
+	}
+}
+
+task undeploy {
+	description 'Removes war from WebSphere Liberty Profile server'
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('file',war.archivePath)
+		ant.undeploy(params)
+	}
+}
+
+task stopServer {
+	clean.dependsOn stopServer
+	description 'Stops the WebSphere Liberty Profile server'
+	doLast {
+		logging.level = LogLevel.INFO
+		def params = buildLibertyMap();
+		params.put('operation','stop')
+		try {
+			ant.server(params)
+		}
+		catch(Exception e) {
+			println e
+		}
+	}
+}

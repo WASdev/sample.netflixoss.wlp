@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="net.wasdev.wlp.netflixoss.hystrix.WsHystrix">
+   <implementation class="net.wasdev.wlp.netflixoss.hystrix.WsHystrix" />
+   <property name="service.vendor" type="String" value="IBM" />
+   <reference interface="com.netflix.hystrix.strategy.concurrency.HystrixConcurrencyStrategy"
+       name="HystrixConcurrencyStrategy" cardinality="1..1" policy="static"
+       bind="setHystrixConcurrencyStrategy" unbind="unsetHystrixConcurrencyStrategy" />
+</scr:component>
