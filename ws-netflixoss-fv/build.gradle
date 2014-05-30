@@ -1,11 +1,26 @@
 import org.apache.tools.ant.taskdefs.condition.Os
-
+apply plugin: 'liberty'
 apply plugin: 'war'
-
-apply from: file('../liberty.gradle')
 
 repositories {
     mavenCentral()
+}
+
+buildscript {
+	repositories {
+		mavenLocal()
+		maven
+		{	name = 'WASdev Repository'
+			url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
+		}
+    }
+	
+    dependencies {
+        classpath 'com.ibm.websphere.wlp.gradle.plugins:liberty-gradle-plugin:1.0' 
+		classpath fileTree(dir: wlpDir+'/bin/tools', include: 'ws-server.jar')
+		classpath fileTree(dir: wlpDir+'/dev/spi/ibm', include: '*.jar')
+		classpath fileTree(dir: wlpDir+'/lib', include: '*.jar')
+    }
 }
 
 dependencies {
@@ -17,12 +32,12 @@ dependencies {
 }
 
 test.dependsOn deployWar
-startServer.dependsOn libertyServer
+libertyStart.dependsOn libertyCreate
 
-libertyServer << {
+libertyCreate << {
     copy {
        from 'src/test/resources'
-       into "${libertyServer.userDir}/servers/defaultServer"
+       into "${buildDir}/wlp/servers/defaultServer"
     }
 }
 
@@ -34,11 +49,18 @@ dependencies {
     features project(path: ':ws-netflixoss', configuration: 'feature')
 }
 
-libertyServer << {
+libertyCreate << {
     exec {
-        environment 'WLP_USER_DIR', libertyServer.userDir
+        environment 'WLP_USER_DIR', "${buildDir}/wlp"
         commandLine file("${wlpDir}/bin/featureManager" + (Os.isFamily(Os.FAMILY_WINDOWS) ? '.bat' : '')), 'install', configurations.features.singleFile
     }
 }
 
-test.finalizedBy stopServer
+test.finalizedBy libertyStop
+
+liberty {
+	wlpDir=project.wlpDir
+	outputDir=null
+	userDir=null
+	serverName=project.serverName
+}
