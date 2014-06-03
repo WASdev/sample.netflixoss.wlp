@@ -22,7 +22,7 @@ The Liberty feature can be added to a Liberty profile installation using the `fe
 wlp\bin\featureManager install ws-netflixoss_1.0.0.esa
 ```
 
-A server instance wishing to use the feature should add the `usr:ws-netflixoss` feature to the `featureManager` stanza in `server.xml`.
+A server instance wishing to use the feature should add the `usr:ws-netflixoss` feature to the `featureManager` stanza in `server.xml`. The server must be using Java 7.
 
 ## Netflix OSS projects supported
 
@@ -64,7 +64,7 @@ Deploying the WAR file `build\libs\ws-hystrix-event-stream-1.0.0.war` to a serve
 The sub-directory `ws-netflixoss-examples` contains some simple technology examples that demonstrate usage of each of the projects. To run the examples:
 
 1. Install the Liberty feature in to a local Maven repository as documented above.
-2. Modify the `wlpDir` property in `ws-netflixoss-examples\gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation.
+2. Modify the `wlpDir` property in `ws-netflixoss-examples\gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation using Java 7.
 2. Execute the following Gradle command in the `ws-netflixoss-examples` directory:
 
     ```bash
