@@ -7,19 +7,19 @@ repositories {
 }
 
 buildscript {
-	repositories {
-		mavenLocal()
-		maven
-		{	name = 'WASdev Repository'
-			url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
-		}
+    repositories {
+        mavenLocal()
+        maven {
+            name = 'WASdev Repository'
+            url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
+        }
     }
 	
     dependencies {
         classpath 'com.ibm.websphere.wlp.gradle.plugins:liberty-gradle-plugin:1.0' 
-		classpath fileTree(dir: wlpDir+'/bin/tools', include: 'ws-server.jar')
-		classpath fileTree(dir: wlpDir+'/dev/spi/ibm', include: '*.jar')
-		classpath fileTree(dir: wlpDir+'/lib', include: '*.jar')
+        classpath fileTree(dir: wlpDir+'/bin/tools', include: 'ws-server.jar')
+        classpath fileTree(dir: wlpDir+'/dev/spi/ibm', include: '*.jar')
+        classpath fileTree(dir: wlpDir+'/lib', include: '*.jar')
     }
 }
 
@@ -33,6 +33,8 @@ dependencies {
 
 test.dependsOn deployWar
 libertyStart.dependsOn libertyCreate
+deployWar.dependsOn libertyStart
+deployWar.dependsOn war
 
 libertyCreate << {
     copy {
@@ -60,7 +62,5 @@ test.finalizedBy libertyStop
 
 liberty {
 	wlpDir=project.wlpDir
-	outputDir=null
-	userDir=null
 	serverName=project.serverName
 }

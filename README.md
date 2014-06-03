@@ -4,9 +4,10 @@ This project creates a Liberty feature that packages a sub-set of the [Netflix O
 
 ## Building the Liberty feature
 
-1. Clone this repository.
-2. Modify the `wlpDir` property in `gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation. This can be obtained from http://wasdev.net.
-3. Ensure that you have a Java runtime on your path and then run the following Gradle command:
+1. Install the Liberty [ci.gradle] plugin in to your local Maven repository.
+2. Clone this repository.
+3. Modify the `wlpDir` property in `gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation. This can be obtained from http://wasdev.net.
+4. Ensure that you have a Java runtime on your path and then run the following Gradle command:
 
     ```bash
     gradlew :ws-netflixoss:buildEsa
@@ -89,6 +90,7 @@ If you edit this value you will see the servlet return the new value without hav
 
 Review the file `ws-netflixoss-examples/src/net/wasdev/wlp/netflixoss/examples/Hystrix.java`. This servlet contains three example usages of `HystrixCommand` returning a string. In `checkThreadContextPropagation` the `run` method of the command returns the principals associated with the current thread. If you browse to http://localhost:9090/ws-netflixoss-examples/hystrix you will see that the principal associated with the original servlet thread is successfully propagated to the thread on which the command is executed. In `checkCommandTimeout` you will see the use of a fallback method when the invocation of the `run` method times out. Lastly, in `checkCommandError` you will see the use of a fallback method when an error is propagated from the `run` method.
 
+[ci.gradle]: https://github.com/WASdev/ci.gradle
 [Netflix OSS]: http://netflix.github.io/
 [Archaius]: https://github.com/Netflix/archaius/wiki
 [Hystrix]: https://github.com/Netflix/hystrix/wiki
