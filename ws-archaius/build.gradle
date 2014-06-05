@@ -17,7 +17,7 @@ jar {
         from file("${project.buildDir}/resources/main/META-INF/MANIFEST.MF")
     }
     from { configurations.embed.collect { it } }
-    from { configurations.export.collect { zipTree(it).matching { include 'com/netflix/config/*.class', 'com/netflix/config/jmx/*.class', 'com/netflix/config/sources/*.class', 'org/apache/commons/configuration/*.class' } } }
+    from { configurations.export.collect { zipTree(it).matching { include 'com/netflix/config/*.class', 'com/netflix/config/jmx/*.class', 'com/netflix/config/sources/*.class' } } }
 }
 
 configurations { embed }
@@ -29,7 +29,6 @@ dependencies {
 configurations { export }
 dependencies {
     export ('com.netflix.archaius:archaius-core:0.5.12') { transitive = false }
-    export ('commons-configuration:commons-configuration:1.8') { transitive = false }
 }
 
 dependencies {

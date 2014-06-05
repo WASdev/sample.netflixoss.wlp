@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Export-Package: org.apache.commons.vfs2, org.apache.commons.vfs2.provider
+Bundle-Version: 1.0.0
+Bundle-ManifestVersion: 2
+Bundle-SymbolicName: ws-eureka-lies
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+

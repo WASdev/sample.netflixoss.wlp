@@ -1,0 +1,26 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: ws-netflixoss-base
+Bundle-SymbolicName: ws-netflixoss-base
+Bundle-Version: 1.0.0.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Export-Package:  org.aopalliance.intercept, 
+ org.apache.commons.beanutils,
+ org.apache.commons.logging, 
+ org.apache.commons.logging.impl, 
+ org.apache.xml.resolver, 
+ org.apache.xml.resolver.helpers, 
+ org.apache.xml.resolver.readers, 
+ org.apache.xml.resolver.tools,
+ org.jdom,
+ org.jdom.input,
+ org.objectweb.asm;version="3.1.0",
+ org.objectweb.asm.commons;version="3.1.0", 
+ org.objectweb.asm.signature;version="3.1.0"
+Bundle-Classpath:  aopalliance-1.0.jar, 
+ asm-3.1.jar, 
+ commons-beanutils-core-1.8.3.jar, 
+ commons-logging-1.1.1.jar, 
+ jdom-2.0.2.jar, 
+ xml-resolver-1.2.jar
+

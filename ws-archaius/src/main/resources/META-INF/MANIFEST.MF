@@ -4,9 +4,9 @@ Build-Jdk: 1.7.0
 Built-By: IBM
 Bundle-Activator: net.wasdev.wlp.netflixoss.archaius.Activator
 Bundle-ClassPath: .,archaius-core-0.5.12.jar,guava-11.0.2.jar,jsr305-1.3
- .9.jar,jackson-mapper-asl-1.9.11.jar,commons-configuration-1.8.jar,comm
- ons-lang-2.6.jar,commons-logging-1.1.1.jar,slf4j-api-1.6.4.jar,jackson-
- core-asl-1.9.11.jar,annotations-2.0.0.jar,slf4j-jdk14-1.6.4.jar
+ .9.jar,jackson-mapper-asl-1.9.11.jar,commons-lang-2.6.jar,commons-loggi
+ ng-1.1.1.jar,slf4j-api-1.6.4.jar,jackson-core-asl-1.9.11.jar,annotation
+ s-2.0.0.jar,slf4j-jdk14-1.6.4.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: ws-archaius
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -31,13 +31,7 @@ Export-Package: com.netflix.config;version="1.0.0.qualifier";uses:="org.
  sources",com.netflix.config.jmx;version="1.0.0.qualifier";uses:="org.ap
  ache.commons.configuration,com.netflix.config,javax.management",com.net
  flix.config.sources;version="1.0.0.qualifier";uses:="javax.sql,com.netf
- lix.config",org.apache.commons.configuration;version="1.8";uses:="org.x
- ml.sax,org.apache.commons.collections,org.apache.commons.digester,org.a
- pache.commons.digester.xmlrules,org.apache.commons.digester.substitutio
- n,org.xml.sax.helpers,javax.sql,javax.naming,org.apache.commons.beanuti
- ls,org.apache.commons.vfs2,org.apache.commons.vfs2.provider,javax.xml.p
- arsers,org.w3c.dom,javax.xml.transform.dom,javax.xml.transform.stream,j
- avax.xml.transform"
+ lix.config"
 Import-Package: com.netflix.config,javax.management;resolution:=optional
  ,javax.naming;resolution:=optional,javax.servlet;resolution:=optional,j
  avax.sql;resolution:=optional,javax.xml.datatype;resolution:=optional,j
@@ -63,5 +57,6 @@ Import-Package: com.netflix.config,javax.management;resolution:=optional
  service.cm;version="[1.5,2)",org.w3c.dom;resolution:=optional,org.w3c.d
  om.bootstrap;resolution:=optional,org.w3c.dom.ls;resolution:=optional,o
  rg.xml.sax;resolution:=optional,org.xml.sax.helpers;resolution:=optiona
- l,sun.misc;resolution:=optional
+ l,sun.misc;resolution:=optional,org.apache.commons.configuration,org.ap
+ ache.commons.configuration.event
 Tool: Bnd-1.50.0

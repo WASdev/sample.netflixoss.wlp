@@ -1,0 +1,29 @@
+apply plugin: 'java'
+apply plugin: 'osgi'
+defaultTasks 'clean', 'jar'
+
+jar.version = project.version
+jar.archiveName = "${jar.baseName}_${jar.version}.jar"
+
+repositories {
+    mavenCentral()
+}
+
+// ws-eureka-lies is a bundle that we need to help the ws-eureka features resolve as OSGi bundles. 
+// It 'lies' because it claims to export packages that it does not contain. 
+// It does not contain them because the artifact's maven repo is not properly populated. 
+
+configurations { embed }
+dependencies {
+    embed ('org.apache.commons:commons-vfs2-project:2.0') // n.b. this provides no .jar
+}
+
+jar {
+    manifest {
+        from file("${project.buildDir}/resources/main/META-INF/MANIFEST.MF")
+    }
+}
+
+// Export jar output as artifact on bundle configuration
+configurations { bundle }
+artifacts { bundle jar }

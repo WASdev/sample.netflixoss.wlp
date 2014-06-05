@@ -1,0 +1,38 @@
+apply plugin: 'java'
+apply plugin: 'osgi'
+defaultTasks 'clean', 'jar'
+
+jar.version = project.version
+jar.archiveName = "${jar.baseName}_${jar.version}.jar"
+
+repositories {
+    mavenCentral()
+}
+
+// This approach will grab all the artifacts that we need, plus some we don't need, plus some that
+// if they were on our Bundle-ClassPath, would break us. It would be good to filter out the jars 
+// we don't need: at the moment they're just dead payload inside our bundle. 
+// For the moment we just include the jars we want on our Bundle-ClassPath
+// The best thing would be if we could filter out all the dependencies that are valid bundles. 
+
+// Also note that cglib-2.2.1-v20090111.jar, which is pulled in as a transitive dependency, is 
+// hard to find in maven - I've still not found valid coordinates for it. 
+
+configurations { justGrabEverything }
+dependencies {                                                      
+    justGrabEverything ('com.netflix.eureka:eureka-client:1.1.132')  
+}
+
+// We can't use bnd to generate the bundle manifest. 
+// See http://forums.gradle.org/gradle/topics/the_osgi_plugin_has_several_flaws
+
+jar {
+    manifest {
+        from file("${project.buildDir}/resources/main/META-INF/MANIFEST.MF")
+    }
+    from { configurations.justGrabEverything.collect { it } }
+}
+
+// Export jar output as artifact on bundle configuration
+configurations { bundle }
+artifacts { bundle jar }

@@ -1,0 +1,35 @@
+apply plugin: 'java'
+apply plugin: 'osgi'
+defaultTasks 'clean', 'jar'
+
+jar.version = project.version
+jar.archiveName = "${jar.baseName}_${jar.version}.jar"
+
+repositories {
+    mavenCentral()
+}
+
+configurations { jarsNotBundles }
+
+dependencies {
+    jarsNotBundles ('aopalliance:aopalliance:1.0')
+    jarsNotBundles ('asm:asm:3.1')
+    jarsNotBundles ('commons-beanutils:commons-beanutils:1.8.3')
+    jarsNotBundles ('commons-logging:commons-logging:1.1.1')
+    jarsNotBundles ('org.jdom:jdom:2.0.2')
+    jarsNotBundles ('xml-resolver:xml-resolver:1.2')
+}
+
+// We can't use bnd to generate the bundle manifest. 
+// See http://forums.gradle.org/gradle/topics/the_osgi_plugin_has_several_flaws
+
+jar {
+    manifest {
+        from file("${project.buildDir}/resources/main/META-INF/MANIFEST.MF")
+    }
+    from { configurations.jarsNotBundles.collect { it } }
+}
+
+// Export jar output as artifact on bundle configuration
+configurations { bundle }
+artifacts { bundle jar }
