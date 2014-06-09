@@ -41,9 +41,10 @@ import com.netflix.servo.monitor.MonitorConfig;
 public class Hystrix extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
-	
-	private static final Counter getRequestCounter = new BasicCounter(MonitorConfig.builder("requestCounter").build());
-	
+
+	private static final Counter getRequestCounter = new BasicCounter(
+			MonitorConfig.builder("requestCounter").build());
+
 	static {
 		DefaultMonitorRegistry.getInstance().register(getRequestCounter);
 	}
@@ -61,10 +62,70 @@ public class Hystrix extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
-		
+
 		getRequestCounter.increment();
+
+		HystrixRequestContext context = HystrixRequestContext
+				.initializeContext();
 		
-		HystrixRequestContext context = HystrixRequestContext.initializeContext();
+		checkThreadContextPropagation(context, request, response);
+		checkCommandTimeout(context, request, response);
+		checkCommandError(context, request, response);
+		context.shutdown();
+	}
+	
+	private void checkCommandError(HystrixRequestContext context,
+			HttpServletRequest request, HttpServletResponse response) throws IOException{
+
+		HystrixCommand<String> hystrixCommand = new HystrixCommand<String>(
+				HystrixCommandGroupKey.Factory.asKey("Timeout")) {
+
+			@Override
+			protected String run() throws Exception {
+				if(true)
+					throw new RuntimeException();
+				return "Shouldn't get here";
+			}
+
+			@Override
+			protected String getFallback() {
+				return "Error Fallback";
+			}
+
+		};
+	
+		ServletOutputStream sos = response.getOutputStream();			
+		sos.println("TimeoutTest:" + hystrixCommand.execute());
+		
+	}
+	
+	private void checkCommandTimeout(HystrixRequestContext context,
+			HttpServletRequest request, HttpServletResponse response) throws IOException{
+
+		HystrixCommand<String> hystrixCommand = new HystrixCommand<String>(
+				HystrixCommandGroupKey.Factory.asKey("Timeout")) {
+
+			@Override
+			protected String run() throws Exception {
+				Thread.sleep(60000);
+				return "Shouldn't get here";
+			}
+
+			@Override
+			protected String getFallback() {
+				return "Timeout Fallback";
+			}
+
+		};
+	
+		ServletOutputStream sos = response.getOutputStream();			
+		sos.println("TimeoutTest:" + hystrixCommand.execute());
+		
+	}
+
+	private void checkThreadContextPropagation(HystrixRequestContext context,
+			HttpServletRequest request, HttpServletResponse response) throws IOException{
+
 		HystrixCommand<String> hystrixCommand = new HystrixCommand<String>(
 				HystrixCommandGroupKey.Factory.asKey("GetPrincipal")) {
 
@@ -79,17 +140,16 @@ public class Hystrix extends HttpServlet {
 			}
 
 		};
-		
+
 		try {
 			ServletOutputStream sos = response.getOutputStream();
-			sos.println("Servlet:"+request.getUserPrincipal().toString());
-			sos.println("ServletThread:"+WSSubject.getRunAsSubject().getPrincipals().toString());
-			sos.println("HystrixThread:"+hystrixCommand.execute());						
+			sos.println("Servlet:" + request.getUserPrincipal().toString());
+			sos.println("ServletThread:"
+					+ WSSubject.getRunAsSubject().getPrincipals().toString());
+			sos.println("HystrixThread:" + hystrixCommand.execute());
 		} catch (WSSecurityException e) {
 			e.printStackTrace();
 		}
-
-		context.shutdown();
 	}
 
 }
