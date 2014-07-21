@@ -8,15 +8,15 @@ repositories {
 
 buildscript {
     repositories {
-        mavenLocal()
+        mavenCentral()
         maven {
-            name = 'WASdev Repository'
-            url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
+            name = 'Sonatype Nexus Snapshots'
+            url = 'https://oss.sonatype.org/content/repositories/snapshots/'
         }
     }
 	
     dependencies {
-        classpath 'com.ibm.websphere.wlp.gradle.plugins:liberty-gradle-plugin:1.0' 
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:1.0-SNAPSHOT'
         classpath fileTree(dir: wlpDir+'/bin/tools', include: 'ws-server.jar')
         classpath fileTree(dir: wlpDir+'/dev/spi/ibm', include: '*.jar')
         classpath fileTree(dir: wlpDir+'/lib', include: '*.jar')

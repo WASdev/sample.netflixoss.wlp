@@ -4,10 +4,9 @@ This project creates a Liberty feature that packages a sub-set of the [Netflix O
 
 ## Building the Liberty feature
 
-1. Install the Liberty [ci.gradle] plugin in to your local Maven repository.
-2. Clone this repository.
-3. Modify the `wlpDir` property in `gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation. This can be obtained from http://wasdev.net.
-4. Ensure that you have a Java runtime on your path and then run the following Gradle command:
+1. Clone this repository.
+2. Modify the `wlpDir` property in `gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation. This can be obtained from http://wasdev.net.
+3. Ensure that you have a Java runtime on your path and then run the following Gradle command:
 
     ```bash
     gradlew :ws-netflixoss:buildEsa
