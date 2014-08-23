@@ -1,1 +1,1 @@
-include "ws-archaius", "ws-netflixoss", "ws-netflixoss-fv", "ws-hystrix", "ws-hystrix-event-stream", "ws-eureka", "ws-eureka-lies", "ws-netflixoss-base"
+include "ws-archaius", "ws-netflixoss", "ws-netflixoss-fv", "ws-hystrix", "ws-hystrix-event-stream", "ws-eureka", "ws-eureka-lies", "ws-netflixoss-base", "ws-netflixoss-examples"

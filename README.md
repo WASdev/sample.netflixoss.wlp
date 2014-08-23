@@ -63,12 +63,11 @@ Deploying the WAR file `build\libs\ws-hystrix-event-stream-1.0.0.war` to a serve
 
 The sub-directory `ws-netflixoss-examples` contains some simple technology examples that demonstrate usage of each of the projects. To run the examples:
 
-1. Install the Liberty feature in to a local Maven repository as documented above.
-2. Modify the `wlpDir` property in `ws-netflixoss-examples\gradle.properties` to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation using Java 7.
+1. Ensure that the `wlpDir` property in `gradle.properties` is set to point to the root directory of a WebSphere Application Server Liberty Profile V8.5.5.2 installation using Java 7.
 2. Execute the following Gradle command in the `ws-netflixoss-examples` directory:
 
     ```bash
-    gradlew build libertyServer deployWar startServer
+    gradlew build libertyCreate deployWar libertyStart
     ```
 
 ### Archaius

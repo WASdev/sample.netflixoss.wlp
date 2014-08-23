@@ -1,13 +1,30 @@
+import org.apache.tools.ant.taskdefs.condition.Os
 apply plugin: 'jetty'
 apply plugin: 'war'
 apply plugin: 'eclipse'
 apply plugin: 'eclipse-wtp'
-apply from: file('./gradle/liberty.gradle')
+apply plugin: 'liberty'
 group = 'gradle'
 version = '1.0'
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name = 'Sonatype Nexus Snapshots'
+            url = 'https://oss.sonatype.org/content/repositories/snapshots/'
+        }
+    }
+	
+    dependencies {
+        classpath 'net.wasdev.wlp.gradle.plugins:liberty-gradle-plugin:1.0-SNAPSHOT'
+        classpath fileTree(dir: wlpDir+'/bin/tools', include: 'ws-server.jar')
+        classpath fileTree(dir: wlpDir+'/dev/spi/ibm', include: '*.jar')
+        classpath fileTree(dir: wlpDir+'/lib', include: '*.jar')
+    }
+}
+
 repositories {	
-	mavenLocal()
 	maven {
 		name = 'WASdev Repository'
 		url = 'http://public.dhe.ibm.com/ibmdl/export/pub/software/websphere/wasdev/maven/repository/'
@@ -19,8 +36,10 @@ dependencies {
 	providedCompile("javax.servlet:javax.servlet-api:3.0.1") { transitive = false } 
 	providedCompile ("com.netflix.archaius:archaius-core:0.5.12") { transitive = false }
 	providedCompile ("com.netflix.hystrix:hystrix-core:1.3.9") { transitive = false }
+        providedCompile 'com.ibm.websphere.appserver.api:com.ibm.websphere.appserver.api.basics:1.0.2'
+        providedCompile 'com.ibm.websphere.appserver.api:com.ibm.websphere.appserver.spi.logging:1.0.0'
 	compile 'com.netflix.ribbon:ribbon-httpclient:0.3.10'
-	compile 'com.netflix.servo:servo-core:0.6.0'				   				  			 
+	compile 'com.netflix.servo:servo-core:0.6.0'
 	runtime 'org.slf4j:slf4j-jdk14:1.7.6'				               
 }
 
@@ -49,7 +68,39 @@ eclipse {
 	classpath { defaultOutputDir = file('WebContent/WEB-INF/classes') }
 }
 
-war
-{
+war {
         webXml = file('WebContent/WEB-INF/web.xml')
+}
+
+libertyCreate << {
+    copy {
+        from 'wlp'
+        into "${buildDir}/wlp/servers/defaultServer"
+    }
+}
+
+configurations {
+    features
+}
+
+dependencies {
+    features project(path: ':ws-netflixoss', configuration: 'feature')
+}
+
+libertyCreate << {
+    exec {
+        environment 'WLP_USER_DIR', "${buildDir}/wlp"
+        commandLine file("${wlpDir}/bin/featureManager" + (Os.isFamily(Os.FAMILY_WINDOWS) ? '.bat' : '')), 'install', configurations.features.singleFile
+    }
+}
+
+task deployWar(overwrite: true) << {
+    copy {
+        from project.war.archivePath
+        into "${buildDir}/wlp/servers/defaultServer/apps"
+    }
+}
+
+liberty {
+    wlpDir=project.wlpDir
 }
