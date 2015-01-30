@@ -20,7 +20,7 @@ repositories {
 
 configurations { justGrabEverything }
 dependencies {                                                      
-    justGrabEverything ('com.netflix.eureka:eureka-client:1.1.132')  
+    justGrabEverything ('com.netflix.eureka:eureka-client:1.1.146')  
 }
 
 // We can't use bnd to generate the bundle manifest. 

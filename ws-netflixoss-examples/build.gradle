@@ -34,8 +34,8 @@ repositories {
 
 dependencies {
 	providedCompile("javax.servlet:javax.servlet-api:3.0.1") { transitive = false } 
-	providedCompile ("com.netflix.archaius:archaius-core:0.5.12") { transitive = false }
-	providedCompile ("com.netflix.hystrix:hystrix-core:1.3.9") { transitive = false }
+	providedCompile ("com.netflix.archaius:archaius-core:0.6.5") { transitive = false }
+	providedCompile ("com.netflix.hystrix:hystrix-core:1.4.0-RC5") { transitive = false }
         providedCompile 'com.ibm.websphere.appserver.api:com.ibm.websphere.appserver.api.basics:1.0.2'
         providedCompile 'com.ibm.websphere.appserver.api:com.ibm.websphere.appserver.spi.logging:1.0.0'
 	compile 'com.netflix.ribbon:ribbon-httpclient:0.3.10'

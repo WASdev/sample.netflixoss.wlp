@@ -16,7 +16,10 @@ Bundle-ClassPath: .,
  slf4j-api-1.7.0.jar,
  slf4j-jdk14-1.6.4.jar,
  jackson-core-asl-1.9.2.jar,
- rxjava-core-0.14.11.jar
+ rxjava-core-0.20.4.jar,
+ commons-configuration-1.8.jar,
+ archaius-core-0.4.1.jar,
+ hystrix-core-1.4.0-RC5.jar
 Bundle-Version: 1.0.0
 Bundle-Name: ws-hystrix
 Bundle-ManifestVersion: 2
