@@ -3,10 +3,11 @@ Bnd-LastModified: 1391722837701
 Build-Jdk: 1.7.0
 Built-By: IBM
 Bundle-Activator: net.wasdev.wlp.netflixoss.archaius.Activator
-Bundle-ClassPath: .,archaius-core-0.5.12.jar,guava-11.0.2.jar,jsr305-1.3
- .9.jar,jackson-mapper-asl-1.9.11.jar,commons-lang-2.6.jar,commons-loggi
- ng-1.1.1.jar,slf4j-api-1.6.4.jar,jackson-core-asl-1.9.11.jar,annotation
- s-2.0.0.jar,slf4j-jdk14-1.6.4.jar
+Bundle-ClassPath: .,archaius-core-0.6.5.jar,jackson-annotations-2.4.3.ja
+ r,guava-11.0.2.jar,jsr305-1.3,jackson-core-2.4.3,jackson-databind-2.4.3
+ .jar,jackson-annotations-2.4.3.jar,slf4j-api-1.6.4.jar,commons-configur
+ ation-1.8.jar,commons-lang-2.6.jar,commons-logging-1.1.1.jar,annotation
+ s-2.0.0.jar
 Bundle-ManifestVersion: 2
 Bundle-Name: ws-archaius
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
@@ -14,8 +15,8 @@ Bundle-SymbolicName: ws-archaius
 Bundle-Version: ${version}
 Embed-Dependency: *;groupId=!org.osgi
 Embed-Transitive: true
-Embedded-Artifacts: archaius-core-0.5.12.jar;g="com.netflix.archaius";a=
- "archaius-core";v="0.5.12",guava-11.0.2.jar;g="com.google.guava";a="gua
+Embedded-Artifacts: archaius-core-0.6.5.jar;g="com.netflix.archaius";a=
+ "archaius-core";v="0.6.5",guava-11.0.2.jar;g="com.google.guava";a="gua
  va";v="11.0.2",jsr305-1.3.9.jar;g="com.google.code.findbugs";a="jsr305"
  ;v="1.3.9",jackson-mapper-asl-1.9.11.jar;g="org.codehaus.jackson";a="ja
  ckson-mapper-asl";v="1.9.11",commons-configuration-1.8.jar;g="commons-c

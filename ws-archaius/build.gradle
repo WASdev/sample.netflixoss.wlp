@@ -22,17 +22,17 @@ jar {
 
 configurations { embed }
 dependencies {
-    embed 'com.netflix.archaius:archaius-core:0.5.12'
+    embed 'com.netflix.archaius:archaius-core:0.6.5'
     embed 'org.slf4j:slf4j-jdk14:1.6.4'
 }
 
 configurations { export }
 dependencies {
-    export ('com.netflix.archaius:archaius-core:0.5.12') { transitive = false }
+    export ('com.netflix.archaius:archaius-core:0.6.5') { transitive = false }
 }
 
 dependencies {
-    compile 'com.netflix.archaius:archaius-core:0.5.12'
+    compile 'com.netflix.archaius:archaius-core:0.6.5'
     compile 'org.osgi:org.osgi.core:5.0.0'
     compile 'org.osgi:org.osgi.compendium:5.0.0'
 }
