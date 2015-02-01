@@ -7,6 +7,8 @@
 		<feature>servlet-3.0</feature>
 		<feature>appSecurity-2.0</feature>
 		<feature>concurrent-1.0</feature>
+		<feature>cdi-1.0</feature>
+		<feature>beanValidation-1.0</feature>
 		<feature>usr:ws-netflixoss</feature>
 		<feature>jaxrs-1.1</feature>
 	</featureManager>
