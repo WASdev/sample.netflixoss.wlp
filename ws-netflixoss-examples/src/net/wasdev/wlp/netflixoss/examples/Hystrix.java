@@ -78,7 +78,7 @@ public class Hystrix extends HttpServlet {
 			HttpServletRequest request, HttpServletResponse response) throws IOException{
 
 		HystrixCommand<String> hystrixCommand = new HystrixCommand<String>(
-				HystrixCommandGroupKey.Factory.asKey("Timeout")) {
+				HystrixCommandGroupKey.Factory.asKey("Error")) {
 
 			@Override
 			protected String run() throws Exception {
